@@ -1,9 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<head>    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Weather Dashboard</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <style>
@@ -13,38 +12,39 @@
             box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-        
-        body {
+          body {
             background: linear-gradient(135deg, #6da7dd 0%, #3f51b5 100%);
             color: #333;
             min-height: 100vh;
-            padding: 20px;
+            padding: 20px 10px;
         }
         
         .container {
             max-width: 800px;
+            width: 100%;
             margin: 0 auto;
             background-color: rgba(255, 255, 255, 0.9);
             border-radius: 15px;
-            padding: 30px;
+            padding: clamp(15px, 4vw, 30px);
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
         }
-        
-        h1 {
+          h1 {
             text-align: center;
             color: #3f51b5;
-            margin-bottom: 30px;
-            font-size: 32px;
+            margin-bottom: clamp(20px, 5vw, 30px);
+            font-size: clamp(24px, 5vw, 32px);
         }
         
         .search-box {
             display: flex;
-            margin-bottom: 30px;
+            flex-wrap: wrap;
+            margin-bottom: clamp(15px, 4vw, 30px);
             gap: 10px;
         }
         
         .input {
             flex: 1;
+            min-width: 200px;
             padding: 12px 15px;
             border: 2px solid #3f51b5;
             border-radius: 30px;
@@ -58,16 +58,16 @@
             border-color: #1a237e;
             box-shadow: 0 0 8px rgba(63, 81, 181, 0.5);
         }
-        
-        .btn {
+          .btn {
             background-color: #3f51b5;
             color: white;
             border: none;
             border-radius: 30px;
-            padding: 12px 25px;
-            font-size: 16px;
+            padding: 10px 20px;
+            font-size: clamp(14px, 3vw, 16px);
             cursor: pointer;
             transition: all 0.3s;
+            white-space: nowrap;
         }
         
         .btn:hover {
@@ -79,6 +79,21 @@
             background-color: #9fa8da;
             cursor: not-allowed;
             transform: none;
+        }
+        
+        @media (max-width: 480px) {
+            .search-box {
+                flex-direction: column;
+            }
+            
+            .input {
+                width: 100%;
+            }
+            
+            .search-btn, .location-btn {
+                width: 100%;
+                justify-content: center;
+            }
         }
         
         .loader {
@@ -105,9 +120,9 @@
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
             display: none;
         }
-        
-        .weather-header {
+          .weather-header {
             display: flex;
+            flex-wrap: wrap;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 20px;
@@ -117,15 +132,21 @@
         
         .weather-main {
             display: flex;
+            flex-wrap: wrap;
             align-items: center;
             justify-content: space-around;
             margin-bottom: 20px;
+            gap: 15px;
         }
         
         .temp {
-            font-size: 64px;
+            font-size: clamp(40px, 10vw, 64px);
             font-weight: bold;
             color: #3f51b5;
+        }
+        
+        .temp-container {
+            margin: 0 auto;
         }
         
         .condition {
@@ -136,10 +157,9 @@
             width: 80px;
             height: 80px;
         }
-        
-        .details {
+          .details {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 15px;
         }
         
@@ -195,10 +215,10 @@
             color: #d32f2f;
             font-weight: bold;
         }
-        
-        .units-toggle {
+          .units-toggle {
             display: flex;
             justify-content: center;
+            flex-wrap: wrap;
             margin-top: 20px;
             gap: 10px;
         }
@@ -210,29 +230,65 @@
             border-radius: 20px;
             cursor: pointer;
             transition: all 0.3s;
+            font-size: clamp(14px, 3vw, 16px);
         }
         
         .unit-btn.active {
             background-color: #3f51b5;
             color: white;
         }
-        
-        .location-btn {
+          .location-btn {
             display: flex;
             align-items: center;
+            justify-content: center;
             gap: 5px;
             background-color: #4CAF50;
             color: white;
             border: none;
             border-radius: 30px;
-            padding: 12px 20px;
-            font-size: 16px;
+            padding: 10px 20px;
+            font-size: clamp(14px, 3vw, 16px);
             cursor: pointer;
         }
         
         .location-btn:hover {
             background-color: #388E3C;
-        }    </style>
+        }
+        
+        /* mobile responsive */
+        @media (max-width: 768px) {
+            .city, .country, .date-time {
+                font-size: clamp(14px, 4vw, 18px);
+            }
+            
+            .forecast-items {
+                justify-content: center;
+            }
+            
+            .forecast-item {
+                min-width: 100px;
+                padding: 10px;
+            }
+            
+            .forecast-date {
+                font-size: 14px;
+            }
+            
+            .forecast-temp {
+                font-size: 18px;
+            }
+            
+            .weather-header > div {
+                width: 100%;
+                text-align: center;
+                margin-bottom: 10px;
+            }
+            
+            .weather-header {
+                flex-direction: column;
+            }
+        }
+    </style>
 </head>
 
 <body>
@@ -316,12 +372,12 @@
         </div>
     </div>    <script>
         "use strict";        
-        // Get API key from localStorage or prompt the user
+        // get the stored api key from local storage
         let apiKey = localStorage.getItem('weatherApiKey');
         
         // Check if API key exists in localStorage
         if (!apiKey) {
-            // If not in localStorage, prompt user to enter it
+            // dont have api key, ask to user to enter api key
             apiKey = prompt("Please enter your WeatherAPI.com API key (it will be stored locally).\n\nDon't have an API key? Get one for free at: https://www.weatherapi.com/");
             
             // Store API key in localStorage
@@ -329,8 +385,7 @@
                 localStorage.setItem('weatherApiKey', apiKey);
             }
         }
-        
-        // Add button to manage API key
+          //button to manage API key
         const apiKeyBtn = document.createElement('button');
         apiKeyBtn.textContent = 'Manage API Key';
         apiKeyBtn.className = 'btn';
@@ -338,6 +393,8 @@
         apiKeyBtn.style.backgroundColor = '#ff9800';
         apiKeyBtn.style.display = 'block';
         apiKeyBtn.style.margin = '10px auto';
+        apiKeyBtn.style.maxWidth = '200px';
+        apiKeyBtn.style.width = '100%';
         
         apiKeyBtn.addEventListener('click', () => {
             const action = confirm('What would you like to do?\n\nOK - Change API key\nCancel - Visit WeatherAPI.com');
